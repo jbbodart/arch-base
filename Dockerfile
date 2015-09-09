@@ -1,5 +1,11 @@
 FROM base/archlinux:2015.06.01
-MAINTAINER binhex
+MAINTAINER jbbodart
+
+# Set up pacman repos
+#####################
+
+# install, run and remove reflector
+RUN pacman -S --needed --noconfirm reflector; reflector --verbose -l 10 -p http --sort rate --save /etc/pacman.d/mirrorlist; pacman -Rs --noconfirm reflector
 
 # additional files
 ##################
@@ -24,7 +30,7 @@ ENV HOME /home/nobody
 ENV TERM xterm
 
 # set environment variables for language
-ENV LANG en_GB.UTF-8
+ENV LANG en_US.UTF-8
 
 # additional files
 ##################
