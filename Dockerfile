@@ -30,4 +30,4 @@ ENV LANG en_US.UTF-8
 ##################
 
 # add supervisor configuration file
-ADD supervisor.conf /etc/supervisor.conf
+ADD supervisord.conf /etc/supervisord.conf
