@@ -1,6 +1,20 @@
 FROM base/archlinux:2015.06.01
 MAINTAINER jbbodart
 
+# update packages
+#################
+
+RUN curl -o /etc/pacman.d/mirrorlist "https://www.archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=4&use_mirror_status=on" && \
+  sed -i 's/^#//' /etc/pacman.d/mirrorlist
+
+ONBUILD RUN pacman-key --populate && \
+  pacman-key --refresh-keys && \
+  pacman -Sy --noprogressbar --noconfirm && \
+  pacman -S --force openssl --noconfirm && \
+  pacman -S pacman --noprogressbar --noconfirm && \
+  pacman-db-upgrade && \
+  pacman -Syyu --noprogressbar --noconfirm
+
 # additional files
 ##################
 
@@ -10,7 +24,7 @@ ADD install.sh /root/install.sh
 # install app
 #############
 
-# run bash script to update base image, set locale, install supervisor and cleanup
+# run bash script to set locale, install supervisor and cleanup
 RUN chmod +x /root/install.sh && \
 	/bin/bash /root/install.sh
 
